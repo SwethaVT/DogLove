@@ -1,0 +1,40 @@
+<%@page import="java.sql.*" %>
+<%@page import="java.io.*" %>
+<%@page import="javax.servlet.*" %>
+
+<%
+String un=request.getParameter("name");
+String pw=request.getParameter("pwd");
+
+try
+{
+Class.forName("oracle.jdbc.driver.OracleDriver");
+Connection con=DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:orcl","system","user");
+PreparedStatement ps=con.prepareStatement("SELECT count(*) FROM registration WHERE reg_id= ? and password=?");
+ps.setString(1,un);
+ps.setString(2,pw);
+ResultSet rs=ps.executeQuery();
+rs.next();
+int count=rs.getInt(1);
+if(count==1)
+{
+out.print("<br><br><br><br>");
+out.print("<h2 align=center>Login Successful</h2>");
+out.print("<h3 align=center>Click to enter home<a href=cop.html>Home Page</a></h3>");
+}
+else
+{
+out.print("<br><br><br><br>");
+out.print("<h2 align=center>Invalid User ID or Password..!</h2>");
+out.print("<h3 align=center>Try again? <a href=l.html>Login Page</a></h3>");
+
+}
+ps.close();
+con.close();
+}
+catch(SQLException | ClassNotFoundException a) 
+	{ 
+	   out.print("<h2>"+a+"</h2>");
+	}
+	out.close();
+%>

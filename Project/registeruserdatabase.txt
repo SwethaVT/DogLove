@@ -1,0 +1,6 @@
+create table registeruser(
+name varchar(50),
+age number,
+emailid varchar(30),
+password varchar(15)
+);
